@@ -30,6 +30,12 @@ db.connect(err => {
 });
 
 // -------------------- ROUTES -------------------- //
+
+//test chemin
+app.get("/", (req, res) => {
+  res.json({ message: "Serveur actif !" });
+});
+
 // 🔹 Inscription
 app.post("/register", (req, res) => {
   const { identifiant, mdp } = req.body;
