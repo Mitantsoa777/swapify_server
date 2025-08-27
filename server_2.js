@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-require('dotenv').config(); // charge les variables .env
+require('dotenv').config();
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -31,7 +31,7 @@ db.connect(err => {
 
 // -------------------- ROUTES -------------------- //
 
-//test chemin
+// Test serveur
 app.get("/", (req, res) => {
   res.json({ message: "Serveur actif !" });
 });
@@ -41,7 +41,7 @@ app.post("/register", (req, res) => {
   const { identifiant, mdp } = req.body;
   if (!identifiant || !mdp) return res.status(400).json({ message: "Veuillez remplir tous les champs" });
 
-  const sql = "INSERT INTO users_2 (identifiant, mdp) VALUES (?, ?)";
+  const sql = "INSERT INTO users_3 (identifiant, mdp) VALUES (?, ?)";
   db.query(sql, [identifiant, mdp], (err, result) => {
     if (err) {
       if (err.code === "ER_DUP_ENTRY") return res.status(400).json({ message: "Identifiant déjà utilisé" });
@@ -56,7 +56,7 @@ app.post("/login", (req, res) => {
   const { identifiant, mdp } = req.body;
   if (!identifiant || !mdp) return res.status(400).json({ message: "Veuillez remplir tous les champs" });
 
-  const sql = "SELECT * FROM users_2 WHERE identifiant = ? AND mdp = ?";
+  const sql = "SELECT * FROM users_3 WHERE identifiant = ? AND mdp = ?";
   db.query(sql, [identifiant, mdp], (err, results) => {
     if (err) return res.status(500).json({ message: "Erreur serveur" });
     if (results.length === 0) return res.status(401).json({ message: "Identifiant ou mot de passe incorrect" });
@@ -66,7 +66,7 @@ app.post("/login", (req, res) => {
 
 // 🔹 Voir tous les utilisateurs
 app.get("/users", (req, res) => {
-  db.query("SELECT * FROM users_2", (err, results) => {
+  db.query("SELECT * FROM users_3", (err, results) => {
     if (err) return res.status(500).json({ message: "Erreur serveur" });
     res.json(results);
   });
